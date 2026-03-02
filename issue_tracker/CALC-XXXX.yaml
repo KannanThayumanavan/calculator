@@ -1,0 +1,36 @@
+id: CALC-XXXX
+jira: SCRUM-24
+type: enhancement
+priority: P2-Normal
+status: open
+labels:
+  - parser-extension
+title: "Feature Request: Add modulo and exponentiation operator support to expression parser"
+description: >
+  Request to extend the expression parser to support new operators (e.g., modulo %, exponentiation **).
+  This is not a regression; these expressions were never supported.
+  The parser should be extended to handle these additional operator types
+  as a new feature, gated behind a feature flag (CALC_EXTENDED_OPERATORS)
+  to ensure backward compatibility and safe rollout.
+components:
+  - expression-parser
+  - calculator-core
+affected_versions:
+  - all
+reporter: scrum-team
+assignee: unassigned
+created: 2024-01-15
+updated: 2024-01-15
+linked_issues:
+  - SCRUM-24
+acceptance_criteria:
+  - "The expression parser supports the modulo operator (%)"
+  - "The expression parser supports the exponentiation operator (**)"
+  - "New operator support is gated behind the CALC_EXTENDED_OPERATORS feature flag"
+  - "Existing behavior is preserved when the feature flag is disabled"
+  - "Unit tests cover both enabled and disabled feature flag scenarios"
+notes: >
+  This ticket was originally filed as a bug report suggesting a regression,
+  but investigation confirmed that modulo and exponentiation operators were
+  never supported by the expression parser. This has been reclassified as
+  an enhancement/feature request accordingly.

@@ -1,0 +1,41 @@
+name: SDLC Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve default branch dynamically
+        id: default-branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DEFAULT_BRANCH=$(gh api repos/${{ github.repository }} --jq '.default_branch')
+          echo "branch=${DEFAULT_BRANCH}" >> "${GITHUB_OUTPUT}"
+
+      - name: Create Pull Request
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: ${{ steps.default-branch.outputs.branch }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_title: "Automated PR - ${{ github.ref_name }}"
+          pr_body: |
+            Automated pull request created by SDLC pipeline.
+
+            Jira: TEST-1
+          pr_draft: false
